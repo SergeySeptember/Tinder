@@ -1,4 +1,5 @@
-﻿using Tinder.Models;
+﻿using System.Text.RegularExpressions;
+using Tinder.Models;
 
 namespace Tinder.Services
 {
@@ -25,7 +26,6 @@ namespace Tinder.Services
         public static Users CreatetUser(RequestUserBody body)
         {
             body.UserName = body.UserName.Trim();
-            body.Email = body.Email.Trim();
             body.Location = body.Location.Trim();
 
             using (Context db = new())
@@ -41,7 +41,6 @@ namespace Tinder.Services
         public static Users UpdateUser(int id, RequestUserBody body)
         {
             body.UserName = body.UserName.Trim();
-            body.Email = body.Email.Trim();
             body.Location = body.Location.Trim();
 
             using (Context db = new())
@@ -86,13 +85,13 @@ namespace Tinder.Services
             {
                 return "Field \"userName\" is empty";
             }
-            if (string.IsNullOrWhiteSpace(body.Email)) // todo reg ex for email
+            if (string.IsNullOrWhiteSpace(body.Email) || !EmailValidation(body.Email))
             {
-                return "Field \"email\" is empty";
+                return "Field \"email\" is empty or invalid";
             }
-            if (string.IsNullOrWhiteSpace(body.Password)) // todo reg ex for password
+            if (string.IsNullOrWhiteSpace(body.Password) || !PasswordValidation(body.Password))
             {
-                return "Field \"password\" is empty";
+                return "Field \"password\" is empty or must password must contain numbers, signs and be between 6 and 20";
             }
             if (string.IsNullOrWhiteSpace(body.Location))
             {
@@ -104,6 +103,19 @@ namespace Tinder.Services
             }
 
             return "true";
+        }
+
+        private static bool EmailValidation(string email)
+        {
+            string pattern = "[.\\-_a-z0-9]+@([a-z0-9][\\-a-z0-9]+\\.)+[a-z]{2,6}";
+            Match isMatch = Regex.Match(email, pattern, RegexOptions.IgnoreCase);
+            return isMatch.Success;
+        }
+        private static bool PasswordValidation(string password)
+        {
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S{6,20}$";
+            Match isMatch = Regex.Match(password, pattern, RegexOptions.IgnoreCase);
+            return isMatch.Success;
         }
     }
 }
