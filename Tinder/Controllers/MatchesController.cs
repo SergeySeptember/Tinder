@@ -1,27 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Tinder.Models;
+using Tinder.Services;
 
 namespace Tinder.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MatchesController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Matches> Get()
         {
-            return new string[] { "value1", "value2" };
+            var matches = ActionMatches.GetMatches();
+            return matches;
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
-        {
+        public IActionResult Post(RequestMatchBody body)
+        { 
+            var createdMatch = ActionMatches.CreateMatch(body);
+
+            if (createdMatch == null)
+            {
+                return BadRequest("Wrong id");
+            }
+            return Ok(createdMatch);
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            string answer = ActionMatches.DeleteMatch(id);
+            if (answer == "Match successfully deleted!")
+            {
+                return Ok(answer);
+            }
+            else
+            {
+                return BadRequest(answer);
+            }
         }
     }
 }

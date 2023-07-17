@@ -14,7 +14,7 @@ namespace Tinder.Services
             string filePath = @"C:\Users\September\source\repos\Tinder\Tinder\.env";
             string[] connectionString = File.ReadAllLines(filePath);
 
-            optionsBuilder.UseNpgsql(connectionString[0]);
+            optionsBuilder.UseNpgsql(connectionString[0]); // todo get section
         }
 
         public DbSet<Users> Users { get; set; }
