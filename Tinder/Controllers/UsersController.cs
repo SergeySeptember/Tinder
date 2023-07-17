@@ -1,38 +1,77 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Tinder.Models;
+using Tinder.Services;
 
 namespace Tinder.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Users> Get()
         {
-            return new string[] { "value1", "value2" };
+            var users = ActionUsers.GetUsers();
+            return users;
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            Users user = ActionUsers.GetUserById(id);
+
+            if (user != null)
+            {
+                return Ok(user);
+            }
+            else
+            {
+                return BadRequest("User not found");
+            }
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(RequestUserBody body)
         {
+            string valid = ActionUsers.Validation(body);
+            if (valid == "true")
+            {
+                var createdUser = ActionUsers.CreatetUser(body);
+                return Ok(createdUser);
+            }
+            else
+            {
+                return BadRequest(valid);
+            }
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] RequestUserBody body)
         {
+            string valid = ActionUsers.Validation(body);
+            if (valid == "true")
+            {
+                var createdUser = ActionUsers.UpdateUser(id, body);
+                return Ok(createdUser);
+            }
+            else
+            {
+                return BadRequest(valid);
+            }
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            string answer = ActionUsers.DeleteUser(id);
+            if (answer == "User successfully deleted!")
+            {
+                return Ok(answer);
+            }
+            else
+            {
+                return BadRequest(answer);
+            }
         }
     }
 }
