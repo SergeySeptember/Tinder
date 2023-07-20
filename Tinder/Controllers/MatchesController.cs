@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Tinder.Models;
+using Tinder.Models.Requests;
 using Tinder.Services;
 
 namespace Tinder.Controllers

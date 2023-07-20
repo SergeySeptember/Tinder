@@ -3,7 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Tinder.Authentication;
+using Tinder.Models;
+using Tinder.Models.Requests;
+using Tinder.Services;
 
 
 [Route("[controller]")]
@@ -17,11 +19,11 @@ public class LoginController : ControllerBase
         _configuration = configuration;
     }
 
-
     [HttpPost]
-    public IActionResult Login(User user)
+    public IActionResult Login(AuthenticationBody user)
     {
-        if (user != null && user.UserName != null && user.Password != null)
+
+        if (Authentication.AuthenticationUser(user))
         {
             var jwt = _configuration.GetSection("Jwt").Get<Jwt> ();
             var claims = new[]
@@ -29,9 +31,8 @@ public class LoginController : ControllerBase
                 new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
-                new Claim("Id", "1"),
-                new Claim("UserName", "admin"),
-                new Claim("Password", "admin")
+                new Claim("UserName", user.UserName),
+                new Claim("Password", user.Password)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.key));
@@ -47,7 +48,7 @@ public class LoginController : ControllerBase
         }
        else
         {
-            return BadRequest("Error");
+            return BadRequest("Invalid login or password");
         }
     }
 }

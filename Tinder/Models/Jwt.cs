@@ -1,12 +1,5 @@
-﻿namespace Tinder.Authentication
+﻿namespace Tinder.Models
 {
-    public class User
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-
-    }
-
     public class Jwt
     {
         public string key { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Tinder.Models;
+using Tinder.Models.Requests;
 
 namespace Tinder.Services
 {
