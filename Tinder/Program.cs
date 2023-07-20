@@ -63,12 +63,12 @@ namespace Tinder
             builder.Services.AddDbContext<Context>(options =>
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
-                var temp = builder.Configuration.GetConnectionString("DefaultConnection");
             });
 
             builder.Services.AddScoped<ActionMatches>();
             builder.Services.AddScoped<ActionUsers>();
             builder.Services.AddScoped<Authentication>();
+            builder.Services.AddScoped<PasswordHashing>();
 
             var app = builder.Build();
 

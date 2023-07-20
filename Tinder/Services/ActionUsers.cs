@@ -6,9 +6,11 @@ namespace Tinder.Services
     public class ActionUsers
     {
         private readonly Context _context;
-        public ActionUsers(Context context)
+        private readonly PasswordHashing _passwordhashing;
+        public ActionUsers(Context context, PasswordHashing passwordhashing)
         {
             _context = context;
+            _passwordhashing = passwordhashing;
         }
         public IEnumerable<Users> GetUsers()
         {
@@ -27,7 +29,14 @@ namespace Tinder.Services
             body.UserName = body.UserName.Trim();
             body.Location = body.Location.Trim();
 
-            _context.Users.AddRange(new Users { UserName = body.UserName, Email = body.Email, Age = body.Age, Location = body.Location, Password = body.Password });
+            _context.Users.AddRange(new Users
+            {
+                UserName = body.UserName,
+                Email = body.Email,
+                Age = body.Age,
+                Location = body.Location,
+                Password = _passwordhashing.HashPassword(body.Password)
+            });
             _context.SaveChanges();
 
             var createdUser = _context.Users.FirstOrDefault(u => u.UserName == body.UserName && u.Email == body.Email);
@@ -45,7 +54,7 @@ namespace Tinder.Services
             updateUser.Email = body.Email;
             updateUser.Age = body.Age;
             updateUser.Location = body.Location;
-            updateUser.Password = body.Password;
+            updateUser.Password = _passwordhashing.HashPassword(body.Password);
 
             _context.SaveChanges();
 
