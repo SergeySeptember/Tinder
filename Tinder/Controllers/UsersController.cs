@@ -11,17 +11,22 @@ namespace Tinder.Controllers
     [Authorize]
     public class UsersController : ControllerBase
     {
+        private readonly ActionUsers _actionUsers;
+        public UsersController(ActionUsers actionUsers)
+        {
+            _actionUsers = actionUsers;
+        }
         [HttpGet]
         public IEnumerable<Users> Get()
         {
-            var users = ActionUsers.GetUsers();
+            var users = _actionUsers.GetUsers();
             return users;
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            Users user = ActionUsers.GetUserById(id);
+            Users user = _actionUsers.GetUserById(id);
 
             if (user != null)
             {
@@ -39,7 +44,7 @@ namespace Tinder.Controllers
             string valid = Validation.ValidationData(body);
             if (valid == "true")
             {
-                var createdUser = ActionUsers.CreatetUser(body);
+                var createdUser = _actionUsers.CreatetUser(body);
                 return Ok(createdUser);
             }
             else
@@ -54,7 +59,7 @@ namespace Tinder.Controllers
             string valid = Validation.ValidationData(body);
             if (valid == "true")
             {
-                var createdUser = ActionUsers.UpdateUser(id, body);
+                var createdUser = _actionUsers.UpdateUser(id, body);
                 return Ok(createdUser);
             }
             else
@@ -66,7 +71,7 @@ namespace Tinder.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            string answer = ActionUsers.DeleteUser(id);
+            string answer = _actionUsers.DeleteUser(id);
             if (answer == "User successfully deleted!")
             {
                 return Ok(answer);

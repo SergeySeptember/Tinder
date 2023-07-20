@@ -5,52 +5,49 @@ namespace Tinder.Services
 {
     public class ActionMatches
     {
-        public static IEnumerable<Matches> GetMatches()
+        private readonly Context _context;
+
+        public ActionMatches(Context context)
         {
-            using (Context db = new())
-            {
-                var allMatches = db.Matches.ToList();
-                return allMatches;
-            };
+            _context = context;
+        }
+        public IEnumerable<Matches> GetMatches()
+        {
+            var allMatches = _context.Matches.ToList();
+            return allMatches;
         }
 
-        public static Matches CreateMatch(RequestMatchBody body)
+        public Matches CreateMatch(RequestMatchBody body)
         {
-            using (Context db = new())
+            var checkMatch = _context.Matches.FirstOrDefault(u => u.FirstUserId == body.FirstUserId && u.SecondUserId == body.SecondUserId);
+
+            if (checkMatch == null && body.FirstUserId != body.SecondUserId)
             {
-                var checkMatch = db.Matches.FirstOrDefault(u => u.FirstUserId == body.FirstUserId && u.SecondUserId == body.SecondUserId);
+                _context.Matches.AddRange(new Matches { FirstUserId = body.FirstUserId, SecondUserId = body.SecondUserId });
+                _context.SaveChanges();
 
-                if (checkMatch == null && body.FirstUserId != body.SecondUserId)
-                {
-                    db.Matches.AddRange(new Matches { FirstUserId = body.FirstUserId, SecondUserId = body.SecondUserId });
-                    db.SaveChanges();
-
-                    var createdMatch = db.Matches.FirstOrDefault(u => u.FirstUserId == body.FirstUserId && u.SecondUserId == body.SecondUserId);
-                    return createdMatch;
-                }
-                else
-                {
-                    return null;
-                }
-            };
+                var createdMatch = _context.Matches.FirstOrDefault(u => u.FirstUserId == body.FirstUserId && u.SecondUserId == body.SecondUserId);
+                return createdMatch;
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public static string DeleteMatch(int id)
+        public string DeleteMatch(int id)
         {
-            using (Context db = new())
+            var item = _context.Matches.Find(id);
+            if (item != null)
             {
-                var item = db.Matches.Find(id);
-                if (item != null)
-                {
-                    db.Matches.Remove(item);
-                    db.SaveChanges();
-                    return "Match successfully deleted!";
-                }
-                else
-                {
-                    return "Match not found";
-                }
-            };
+                _context.Matches.Remove(item);
+                _context.SaveChanges();
+                return "Match successfully deleted!";
+            }
+            else
+            {
+                return "Match not found";
+            }
         }
     }
 }

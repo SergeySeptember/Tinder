@@ -2,21 +2,24 @@
 
 namespace Tinder.Services
 {
-    public static class Authentication
+    public class Authentication
     {
-        public static bool AuthenticationUser(AuthenticationBody body)
+        private readonly Context _context;
+
+        public Authentication(Context context)
         {
-            using (Context db = new())
+            _context = context;
+        }
+        public bool AuthenticationUser(AuthenticationBody body)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserName == body.UserName && u.Password == body.Password);
+            if (user != null)
             {
-                var user = db.Users.FirstOrDefault(u => u.UserName == body.UserName && u.Password == body.Password);
-                if (user != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
