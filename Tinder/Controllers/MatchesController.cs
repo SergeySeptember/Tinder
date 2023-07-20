@@ -11,17 +11,22 @@ namespace Tinder.Controllers
     [Authorize]
     public class MatchesController : ControllerBase
     {
+        private readonly ActionMatches _actionMatches;
+        public MatchesController(ActionMatches actionMatches)
+        {
+            _actionMatches = actionMatches;
+        }
         [HttpGet]
         public IEnumerable<Matches> Get()
         {
-            var matches = ActionMatches.GetMatches();
+            var matches = _actionMatches.GetMatches();
             return matches;
         }
 
         [HttpPost]
         public IActionResult Post(RequestMatchBody body)
-        { 
-            var createdMatch = ActionMatches.CreateMatch(body);
+        {
+            var createdMatch = _actionMatches.CreateMatch(body);
 
             if (createdMatch == null)
             {
@@ -33,7 +38,7 @@ namespace Tinder.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            string answer = ActionMatches.DeleteMatch(id);
+            string answer = _actionMatches.DeleteMatch(id);
             if (answer == "Match successfully deleted!")
             {
                 return Ok(answer);

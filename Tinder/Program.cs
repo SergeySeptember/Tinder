@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Tinder.Services;
 
 namespace Tinder
 {
@@ -57,6 +59,16 @@ namespace Tinder
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:key"]))
                 };
             });
+
+            builder.Services.AddDbContext<Context>(options =>
+            {
+                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+                var temp = builder.Configuration.GetConnectionString("DefaultConnection");
+            });
+
+            builder.Services.AddScoped<ActionMatches>();
+            builder.Services.AddScoped<ActionUsers>();
+            builder.Services.AddScoped<Authentication>();
 
             var app = builder.Build();
 

@@ -5,20 +5,12 @@ namespace Tinder.Services
 {
     public class Context : DbContext
     {
-        public Context()
+        public Context(DbContextOptions<Context> options) : base(options)
         {
             Database.EnsureCreated();
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            string filePath = @"C:\Users\September\source\repos\Tinder\Tinder\.env";
-            string[] connectionString = File.ReadAllLines(filePath);
-
-            optionsBuilder.UseNpgsql(connectionString[0]); // todo get section
         }
 
         public DbSet<Users> Users { get; set; }
         public DbSet<Matches> Matches { get; set; }
-
     }
 }

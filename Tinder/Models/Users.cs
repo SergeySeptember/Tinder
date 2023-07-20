@@ -10,6 +10,6 @@ namespace Tinder.Models
         [JsonIgnore]
         public string Password { get; set; }
         public int Age { get; set; }
-        public string Location { get; set; } 
+        public string Location { get; set; }
     }
 }

@@ -13,19 +13,20 @@ using Tinder.Services;
 public class LoginController : ControllerBase
 {
     public IConfiguration _configuration;
+    private readonly Authentication _authentication;
 
-    public LoginController(IConfiguration configuration)
+    public LoginController(IConfiguration configuration, Authentication authentication)
     {
         _configuration = configuration;
+        _authentication = authentication;
     }
 
     [HttpPost]
     public IActionResult Login(AuthenticationBody user)
     {
-
-        if (Authentication.AuthenticationUser(user))
+        if (_authentication.AuthenticationUser(user))
         {
-            var jwt = _configuration.GetSection("Jwt").Get<Jwt> ();
+            var jwt = _configuration.GetSection("Jwt").Get<Jwt>();
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, jwt.Subject),
@@ -46,7 +47,7 @@ public class LoginController : ControllerBase
                 );
             return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
-       else
+        else
         {
             return BadRequest("Invalid login or password");
         }
