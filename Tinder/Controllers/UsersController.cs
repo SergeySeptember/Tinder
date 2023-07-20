@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tinder.Models;
+using Tinder.Models.Requests;
 using Tinder.Services;
 
 namespace Tinder.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         [HttpGet]
@@ -33,7 +36,7 @@ namespace Tinder.Controllers
         [HttpPost]
         public IActionResult Post(RequestUserBody body)
         {
-            string valid = ActionUsers.Validation(body);
+            string valid = Validation.ValidationData(body);
             if (valid == "true")
             {
                 var createdUser = ActionUsers.CreatetUser(body);
@@ -48,7 +51,7 @@ namespace Tinder.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] RequestUserBody body)
         {
-            string valid = ActionUsers.Validation(body);
+            string valid = Validation.ValidationData(body);
             if (valid == "true")
             {
                 var createdUser = ActionUsers.UpdateUser(id, body);

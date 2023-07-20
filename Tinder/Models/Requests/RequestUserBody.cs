@@ -1,4 +1,4 @@
-﻿namespace Tinder.Models
+﻿namespace Tinder.Models.Requests
 {
     public class RequestUserBody
     {

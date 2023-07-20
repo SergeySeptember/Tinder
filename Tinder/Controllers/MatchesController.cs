@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tinder.Models;
+using Tinder.Models.Requests;
 using Tinder.Services;
 
 namespace Tinder.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class MatchesController : ControllerBase
     {
         [HttpGet]
