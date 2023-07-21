@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -24,7 +25,7 @@ public class LoginController : ControllerBase
     [HttpPost]
     public IActionResult Login(AuthenticationBody user)
     {
-        if (_authentication.AuthenticationUser(user) || user.UserName == "string")
+        if (_authentication.AuthenticationUser(user))
         {
             var jwt = _configuration.GetSection("Jwt").Get<Jwt>();
             var claims = new[]

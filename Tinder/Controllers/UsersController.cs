@@ -8,7 +8,7 @@ namespace Tinder.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ActionUsers _actionUsers;

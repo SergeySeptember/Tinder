@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Diagnostics;
 using System.Text;
 using Tinder.Services;
+using Tinder.Services.Logger;
 
 namespace Tinder
 {
@@ -70,6 +72,8 @@ namespace Tinder
             builder.Services.AddScoped<Authentication>();
             builder.Services.AddScoped<PasswordHashing>();
 
+            builder.Logging.AddFile(Path.Combine(Directory.GetCurrentDirectory(), "logger.txt"));
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
@@ -78,17 +82,14 @@ namespace Tinder
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tinder"));
             }
 
-
             app.UseHttpsRedirection();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
-
         }
     }
 }
