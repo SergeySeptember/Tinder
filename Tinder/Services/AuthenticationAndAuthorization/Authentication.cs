@@ -1,6 +1,6 @@
 ﻿using Tinder.Models.Requests;
 
-namespace Tinder.Services
+namespace Tinder.Services.AuthenticationAndAuthorization
 {
     public class Authentication
     {
