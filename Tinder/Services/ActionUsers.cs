@@ -1,9 +1,11 @@
-﻿using Tinder.Models;
+﻿using System.Xml;
+using Tinder.Interfaces;
+using Tinder.Models;
 using Tinder.Models.Requests;
 
 namespace Tinder.Services
 {
-    public class ActionUsers
+    public class ActionUsers : IActionUsers
     {
         private readonly Context _context;
         private readonly PasswordHashing _passwordhashing;

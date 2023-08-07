@@ -1,9 +1,10 @@
-﻿using Tinder.Models;
+﻿using Tinder.Interfaces;
+using Tinder.Models;
 using Tinder.Models.Requests;
 
 namespace Tinder.Services
 {
-    public class ActionMatches
+    public class ActionMatches : IActionMatches
     {
         private readonly Context _context;
 

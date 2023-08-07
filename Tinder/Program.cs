@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
+using Tinder.Interfaces;
 using Tinder.Services;
+using Tinder.Services.AuthenticationAndAuthorization;
 
 namespace Tinder
 {
@@ -44,6 +47,8 @@ namespace Tinder
                         new string[]{}
                     }
                 });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -65,18 +70,16 @@ namespace Tinder
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<ActionMatches>();
-            builder.Services.AddScoped<ActionUsers>();
+            builder.Services.AddScoped<IActionMatches, ActionMatches>();
+            builder.Services.AddScoped<IActionUsers, ActionUsers>();
             builder.Services.AddScoped<Authentication>();
+            builder.Services.AddScoped<Authorization>();
             builder.Services.AddScoped<PasswordHashing>();
 
             var app = builder.Build();
 
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tinder"));
-            }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Tinder"));
 
 
             app.UseHttpsRedirection();
@@ -84,11 +87,9 @@ namespace Tinder
             app.UseAuthentication();
             app.UseAuthorization();
 
-
             app.MapControllers();
 
             app.Run();
-
         }
     }
 }

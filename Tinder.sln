@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tinder", "Tinder\Tinder.csproj", "{4785104D-17A4-40B3-93FA-5E107F58592B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tinder", "Tinder\Tinder.csproj", "{4785104D-17A4-40B3-93FA-5E107F58592B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{B9EC2250-D0F0-41A3-B731-D7CDF09BE686}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{4785104D-17A4-40B3-93FA-5E107F58592B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4785104D-17A4-40B3-93FA-5E107F58592B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4785104D-17A4-40B3-93FA-5E107F58592B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9EC2250-D0F0-41A3-B731-D7CDF09BE686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9EC2250-D0F0-41A3-B731-D7CDF09BE686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9EC2250-D0F0-41A3-B731-D7CDF09BE686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9EC2250-D0F0-41A3-B731-D7CDF09BE686}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
