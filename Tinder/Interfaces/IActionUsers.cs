@@ -5,7 +5,7 @@ namespace Tinder.Interfaces
 {
     public interface IActionUsers
     {
-        IEnumerable<Users> GetUsers();
+        List<Users> GetUsers();
         Users GetUserById(int id);
         Users CreatetUser(RequestUserBody body);
         Users UpdateUser(int id, RequestUserBody body);

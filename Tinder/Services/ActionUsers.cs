@@ -14,7 +14,7 @@ namespace Tinder.Services
             _context = context;
             _passwordhashing = passwordhashing;
         }
-        public IEnumerable<Users> GetUsers()
+        public List<Users> GetUsers()
         {
             var allUsers = _context.Users.ToList();
             return allUsers;
