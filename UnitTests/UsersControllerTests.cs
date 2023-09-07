@@ -27,13 +27,13 @@ namespace UnitTests
 
             // Act
             var result = controller.Get() as OkObjectResult;
-            var data = result.Value as List<Users>;
-            
+            var data = (UsersList)result.Value;
+
             // Assert
             Assert.NotNull(result);
             Assert.Equal(200, result.StatusCode);
             Assert.NotNull(data);
-            Assert.Equal(expectedUsers.Count, data.Count);
+            Assert.Equal(expectedUsers.Count, data.Users.Count);
         }
 
         [Fact]
