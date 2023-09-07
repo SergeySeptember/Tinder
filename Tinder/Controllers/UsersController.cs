@@ -30,7 +30,7 @@ namespace Tinder.Controllers
         public IActionResult Get()
         {
             var users = _actionUsers.GetUsers();
-            return Ok(new { users });
+            return Ok(users);
         }
 
         /// <summary>
