@@ -50,7 +50,7 @@ namespace Tinder.Services
         }
         private static bool PasswordValidation(string password)
         {
-            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])\S{6,20}$";
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$";
             Match isMatch = Regex.Match(password, pattern, RegexOptions.IgnoreCase);
             return isMatch.Success;
         }
