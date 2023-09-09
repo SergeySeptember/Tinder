@@ -6,41 +6,38 @@ namespace Tinder.Services
 {
     public static class Validation
     {
+        public static readonly string errorName = "Field \"userName\" is empty\r\n";
+        public static readonly string errorEmail = "Field \"email\" is empty or invalid\r\n";
+        public static readonly string errorPassword = "Field \"password\" is empty or must password must contain numbers, signs and be between 6 and 20\r\n";
+        public static readonly string errorLocation = "Field \"location\" is empty\r\n";
+        public static readonly string errorAge = "Age must be between 18 and 120\r\n";
+
+
         public static string ValidationData(RequestUserBody body)
         {
             StringBuilder validInfo = new StringBuilder();
 
             if (string.IsNullOrWhiteSpace(body.UserName))
-            {
-                validInfo.AppendLine("Field \"userName\" is empty");
-            }
+                validInfo.Append(errorName);
+
             if (string.IsNullOrWhiteSpace(body.Email) || !EmailValidation(body.Email))
-            {
-                validInfo.AppendLine("Field \"email\" is empty or invalid");
-            }
+                validInfo.Append(errorEmail);
+
             if (string.IsNullOrWhiteSpace(body.Password) || !PasswordValidation(body.Password))
-            {
-                validInfo.AppendLine("Field \"password\" is empty or must password must contain numbers, signs and be between 6 and 20");
-            }
+                validInfo.Append(errorPassword);
+
             if (string.IsNullOrWhiteSpace(body.Location))
-            {
-                validInfo.AppendLine("Field \"location\" is empty");
-            }
+                validInfo.Append(errorLocation);
+
             if (body.Age < 18 || body.Age > 120)
-            {
-                validInfo.AppendLine("Age must be between 18 and 120");
-            }
+                validInfo.Append(errorAge);
 
             string resultOfValid = validInfo.ToString();
 
             if (string.IsNullOrWhiteSpace(resultOfValid))
-            {
                 return "true";
-            }
             else
-            {
-                return resultOfValid;
-            }
+                return resultOfValid.ToString();
         }
         private static bool EmailValidation(string email)
         {
