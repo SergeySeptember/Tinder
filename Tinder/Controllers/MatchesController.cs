@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Tinder.Interfaces;
 using Tinder.Models;
 using Tinder.Models.Requests;
-using Tinder.Services;
 
 namespace Tinder.Controllers
 {
@@ -29,7 +28,7 @@ namespace Tinder.Controllers
         public IActionResult Get()
         {
             var matches = _actionMatches.GetMatches();
-            return Ok(new { matches });
+            return Ok(matches);
         }
 
         /// <summary>
